@@ -36,9 +36,17 @@ namespace Headless.API.Controllers
 
         // GET api/<ValuesController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult> GetSinglePage(Guid id)
         {
-            return "value";
+            try
+            {
+                return Ok(await PagesManager.GetPage(id));
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
         }
 
         // POST api/<ValuesController>
@@ -59,24 +67,44 @@ namespace Headless.API.Controllers
         }
 
         // PUT api/<ValuesController>/5
+        [Authorize]
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Lang pagePL)
+        public async Task<ActionResult> Put(Guid id, [FromBody] Page pagePL)
         {
             try
             {
-
+                Page updatedPage = await PagesManager.UpdatePage(id, pagePL);
+                return Ok(updatedPage);
             }
             catch (Exception ex)
             {
 
-                throw;
+                return BadRequest(ex.Message);
             }
         }
 
         // DELETE api/<ValuesController>/5
+        [Authorize]
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult> Delete(Guid id)
         {
+            try
+            {
+                bool successfully = await PagesManager.DeletePage(id);
+                if (successfully)
+                {
+                    return Ok(new { deleted = true });
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

@@ -71,12 +71,13 @@ namespace Headless.API.Controllers
         }
 
         // PUT api/<LangController>/5
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateLang(Guid id, [FromBody] Lang pagePL)
         {
             try
             {
-                Lang updatedLang = await LangManager.UpdateLang(pagePL);
+                Lang updatedLang = await LangManager.UpdateLang(id, pagePL);
                 return Ok(updatedLang);
             }
             catch (Exception ex)
@@ -87,6 +88,7 @@ namespace Headless.API.Controllers
         }
 
         // DELETE api/<LangController>/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {
