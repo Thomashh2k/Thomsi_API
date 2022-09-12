@@ -4,6 +4,7 @@ using Headless.Core.Payloads;
 using Headless.DB.Tables;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,8 +27,9 @@ namespace Headless.API.Controllers
         {
             try
             {
-                PaginatedList<Lang> test = await LangManager.GetPaginatedLang(count, pageIndex, pageSize);
-                return Ok(test);
+                
+                PaginatedList<Lang> paginatedLangs = await LangManager.GetPaginatedLang(count, pageIndex, pageSize);
+                return Ok(paginatedLangs);
 
             }
             catch (Exception ex)
