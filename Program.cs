@@ -22,6 +22,7 @@ builder.Services.AddDbContext<HeadlessDbContext>(options =>
 // Adding Managers
 builder.Services.AddScoped<ILangManager,LangManager>();
 builder.Services.AddScoped<IPagesManager,PagesManager>();
+builder.Services.AddScoped<ICustomFormManager,CustomFormManager>();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<HeadlessDbContext>()
@@ -66,7 +67,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors(options => options.WithOrigins("http://localhost:8080").AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+app.UseCors(options => options.WithOrigins(configuration["JWT:ValidAudience"]).AllowAnyMethod().AllowAnyHeader().AllowCredentials());
 
 app.MapControllers();
 

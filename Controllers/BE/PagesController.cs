@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Headless.API.Controllers
+namespace Headless.API.Controllers.BE
 {
-    [Route("api/[controller]")]
+    [Route("api/be/[controller]")]
     [ApiController]
     public class PagesController : ControllerBase
     {
@@ -18,7 +18,7 @@ namespace Headless.API.Controllers
         {
             PagesManager = pagesManager;
         }
-        // GET: api/<ValuesController>
+        // GET: api/be/<ValuesController>
         [HttpGet("nobody")]
         public async Task<ActionResult> GetPagesWithoutBody([FromQuery(Name = "count")] int count, [FromQuery(Name = "pageIndex")] int pageIndex, [FromQuery(Name = "pageSize")] int pageSize)
         {
@@ -28,13 +28,13 @@ namespace Headless.API.Controllers
 
                 return Ok(pagesWithoutBody);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-        // GET api/<ValuesController>/5
+        // GET api/be/<ValuesController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult> GetSinglePage(Guid id)
         {
@@ -49,10 +49,10 @@ namespace Headless.API.Controllers
             }
         }
 
-        // POST api/<ValuesController>
+        // POST api/be/<ValuesController>
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] CreatePagePL pagePL)
+        public async Task<ActionResult> Post([FromBody] PagePL pagePL)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace Headless.API.Controllers
             }
         }
 
-        // PUT api/<ValuesController>/5
+        // PUT api/be/<ValuesController>/5
         [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(Guid id, [FromBody] Page pagePL)
@@ -83,7 +83,7 @@ namespace Headless.API.Controllers
             }
         }
 
-        // DELETE api/<ValuesController>/5
+        // DELETE api/be/<ValuesController>/5
         [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)

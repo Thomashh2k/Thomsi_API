@@ -12,9 +12,9 @@ using System.Text;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Headless.API.Controllers
+namespace Headless.API.Controllers.BE
 {
-    [Route("api/[controller]")]
+    [Route("api/be/[controller]")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
@@ -32,9 +32,9 @@ namespace Headless.API.Controllers
         }
 
 
-        // GET api/<ValuesController>/5
+        // GET api/be/<ValuesController>/5
         [HttpPost("valid")]
-        public async Task<ActionResult> isTokenValid([FromBody]TokenPL payload)
+        public async Task<ActionResult> isTokenValid([FromBody] TokenPL payload)
         {
             if (payload.Token == null)
                 return BadRequest("Token is needed for verification!");
@@ -57,19 +57,19 @@ namespace Headless.API.Controllers
                 var userId = jwtToken.Claims.First(x => x.Type == "UserID").Value;
 
                 // return user id from JWT token if validation successful
-                return Ok(new {isVaild = true});
+                return Ok(new { isVaild = true });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 // return null if validation fails
                 return BadRequest(ex);
             }
         }
 
-        // POST api/<ValuesController>
+        // POST api/be/<ValuesController>
         [HttpPost]
-        [Authorize]
-        public async Task<ActionResult> CreatePanelUser([FromBody]IdentityUserPL newPanelUser)
+        //[Authorize]
+        public async Task<ActionResult> CreatePanelUser([FromBody] IdentityUserPL newPanelUser)
         {
             var userExists = await _userManager.FindByNameAsync(newPanelUser.Username);
             if (userExists != null)
@@ -120,13 +120,13 @@ namespace Headless.API.Controllers
             return Unauthorized();
         }
 
-        // PUT api/<ValuesController>/5
+        // PUT api/be/<ValuesController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/<ValuesController>/5
+        // DELETE api/be/<ValuesController>/5
         [HttpDelete("logout")]
         public void Logout()
         {

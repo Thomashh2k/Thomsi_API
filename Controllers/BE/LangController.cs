@@ -8,9 +8,9 @@ using System.Diagnostics;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Headless.API.Controllers
+namespace Headless.API.Controllers.BE
 {
-    [Route("api/[controller]")]
+    [Route("api/be/[controller]")]
     [ApiController]
     public class LangController : ControllerBase
     {
@@ -21,13 +21,13 @@ namespace Headless.API.Controllers
         }
 
 
-        // GET: api/<LangController>
+        // GET: api/be/<LangController>
         [HttpGet]
         public async Task<ActionResult> Get([FromQuery(Name = "count")] int count, [FromQuery(Name = "pageIndex")] int pageIndex, [FromQuery(Name = "pageSize")] int pageSize)
         {
             try
             {
-                
+
                 PaginatedList<Lang> paginatedLangs = await LangManager.GetPaginatedLang(count, pageIndex, pageSize);
                 return Ok(paginatedLangs);
 
@@ -38,7 +38,7 @@ namespace Headless.API.Controllers
             }
         }
 
-        // GET api/<LangController>/5
+        // GET api/be/<LangController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult> GetLangById(Guid id)
         {
@@ -54,10 +54,10 @@ namespace Headless.API.Controllers
             }
         }
 
-        // POST api/<LangController>
+        // POST api/be/<LangController>
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] CreateLanuagePL langPL)
+        public async Task<ActionResult> Post([FromBody] LanuagePL langPL)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace Headless.API.Controllers
             }
         }
 
-        // PUT api/<LangController>/5
+        // PUT api/be/<LangController>/5
         [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateLang(Guid id, [FromBody] Lang pagePL)
@@ -89,7 +89,7 @@ namespace Headless.API.Controllers
             }
         }
 
-        // DELETE api/<LangController>/5
+        // DELETE api/be/<LangController>/5
         [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
@@ -99,7 +99,7 @@ namespace Headless.API.Controllers
                 bool successfully = await LangManager.DeleteLang(id);
                 if (successfully)
                 {
-                    return Ok(new { deleted = true});
+                    return Ok(new { deleted = true });
                 }
                 else
                 {
