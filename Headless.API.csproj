@@ -28,8 +28,4 @@
     <ProjectReference Include="..\Thomsi_DB\Headless.DB.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\FE\" />
-  </ItemGroup>
-
 </Project>
