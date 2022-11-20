@@ -69,6 +69,7 @@ namespace Headless.API.Controllers.BE
         // POST api/be/<ValuesController>
         [HttpPost]
         //[Authorize]
+        // "36d667b9-c548-41a8-9589-9fe3674780b5"	"thomashh"	"THOMASHH"	"thomas@example.com"	"THOMAS@EXAMPLE.COM"	false	"AQAAAAEAACcQAAAAEP8soBRamuLL+zCY1y7DR2LEd8ZHftg0J1CKVK7L+TUVA+kZpyhngP6kP/rs7TShDQ=="	"4KV7QPXMJMX4DVX47YPTHTTH7J3NE67U"	"9e67c5a5-2581-45d2-b008-02e9960b111e"		false	false		true	0					
         public async Task<ActionResult> CreatePanelUser([FromBody] IdentityUserPL newPanelUser)
         {
             var userExists = await _userManager.FindByNameAsync(newPanelUser.Username);

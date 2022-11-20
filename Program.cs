@@ -22,6 +22,7 @@ builder.Services.AddDbContext<HeadlessDbContext>(options =>
 // Adding Managers
 builder.Services.AddScoped<ILangManager,LangManager>();
 builder.Services.AddScoped<IPagesManager,PagesManager>();
+builder.Services.AddScoped<IActualPagesManager,ActualPagesManager>();
 builder.Services.AddScoped<ICustomFormManager,CustomFormManager>();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()

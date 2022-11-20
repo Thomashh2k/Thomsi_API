@@ -14,9 +14,11 @@ namespace Headless.API.Controllers.BE
     public class PagesController : ControllerBase
     {
         IPagesManager PagesManager { get; set; }
-        public PagesController(IPagesManager pagesManager)
+        IActualPagesManager ActualPagesManager { get; set; }
+        public PagesController(IPagesManager pagesManager, IActualPagesManager actualPagesManager)
         {
             PagesManager = pagesManager;
+            ActualPagesManager = actualPagesManager;
         }
         // GET: api/be/<ValuesController>
         [HttpGet("nobody")]
@@ -34,13 +36,15 @@ namespace Headless.API.Controllers.BE
             }
         }
 
-        // GET api/be/<ValuesController>/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult> GetSinglePage(Guid id)
+        // GET api/be/<ValuesController>/{langId}/{id}
+        [HttpGet("{langId}/{id}")]
+        public async Task<ActionResult> GetSinglePage(Guid id, Guid langId)
         {
             try
             {
-                return Ok(await PagesManager.GetPage(id));
+                Page page = await PagesManager.GetPage(id);
+                ActualPage actualPage = await ActualPagesManager.GetActualPage(id, langId);
+                return Ok(new {page, actualPage});
             }
             catch (Exception ex)
             {
@@ -57,8 +61,9 @@ namespace Headless.API.Controllers.BE
             try
             {
                 Page newPage = await PagesManager.CreatePage(pagePL);
+                ActualPage newActualPage = await ActualPagesManager.CreateActualPage(newPage.Id ,pagePL);
 
-                return Ok(newPage);
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -69,12 +74,13 @@ namespace Headless.API.Controllers.BE
         // PUT api/be/<ValuesController>/5
         [Authorize]
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(Guid id, [FromBody] Page pagePL)
+        public async Task<ActionResult> Put(Guid id, [FromBody] PagePL pagePL)
         {
             try
             {
-                Page updatedPage = await PagesManager.UpdatePage(id, pagePL);
-                return Ok(updatedPage);
+                Page page = await PagesManager.UpdatePage(id, pagePL);
+                await ActualPagesManager.UpdateActualPage(id, pagePL.LangId, pagePL);
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -91,9 +97,10 @@ namespace Headless.API.Controllers.BE
             try
             {
                 bool successfully = await PagesManager.DeletePage(id);
+                await ActualPagesManager.DeleteActualPages(id);
                 if (successfully)
                 {
-                    return Ok(new { deleted = true });
+                    return Ok();
                 }
                 else
                 {
